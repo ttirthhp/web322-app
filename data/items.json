@@ -1,0 +1,21 @@
+[
+    { "id": 1, "category": 1, "price": 29.99, "title": "Garden Chair" },
+    { "id": 2, "category": 1, "price": 99.99, "title": "Wooden Dining Table" },
+    { "id": 3, "category": 2, "price": 599.99, "title": "Smartphone" },
+    { "id": 4, "category": 2, "price": 299.99, "title": "Wireless Headphones" },
+    { "id": 5, "category": 3, "price": 19.99, "title": "T-Shirt" },
+    { "id": 6, "category": 3, "price": 49.99, "title": "Jeans" },
+    { "id": 7, "category": 4, "price": 49.99, "title": "Basketball" },
+    { "id": 8, "category": 4, "price": 89.99, "title": "Cricket Bat" },
+    { "id": 9, "category": 5, "price": 5.99, "title": "Basmati Rice (5kg)" },
+    { "id": 10, "category": 5, "price": 3.99, "title": "Masala Chai (Tea)" },
+    { "id": 11, "category": 5, "price": 2.49, "title": "Garam Masala Spice Mix" },
+    { "id": 12, "category": 5, "price": 7.99, "title": "Paneer (Indian Cottage Cheese)" },
+    { "id": 13, "category": 6, "price": 129.99, "title": "Gold Plated Necklace Set" },
+    { "id": 14, "category": 6, "price": 49.99, "title": "Silver Jhumka Earrings" },
+    { "id": 15, "category": 7, "price": 9.99, "title": "Notebook Set (5 pcs)" },
+    { "id": 16, "category": 7, "price": 19.99, "title": "Classic Literature Collection" },
+    { "id": 17, "category": 8, "price": 89.99, "title": "Men's Kurta Pajama" },
+    { "id": 18, "category": 8, "price": 119.99, "title": "Women's Saree (Silk)" },
+    { "id": 19, "category": 8, "price": 69.99, "title": "Women's Salwar Kameez" }
+]

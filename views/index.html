@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>eCommerce Store</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+    <h1>Welcome to Our Store</h1>
+    
+    <h2>Categories</h2>
+    <ul id="category-list"></ul>
+
+    <h2>Items</h2>
+    <ul id="item-list"></ul>
+
+    <script>
+        async function fetchCategories() {
+            const res = await fetch('/categories');
+            const categories = await res.json();
+            const categoryList = document.getElementById("category-list");
+
+            categories.forEach(category => {
+                let li = document.createElement("li");
+                li.innerHTML = `<a href="#" onclick="fetchItems(${category.id})">${category.category}</a>`;
+                categoryList.appendChild(li);
+            });
+        }
+
+        async function fetchItems(categoryId) {
+            const res = await fetch(`/items/${categoryId}`);
+            const items = await res.json();
+            const itemList = document.getElementById("item-list");
+            itemList.innerHTML = ""; // Clear previous items
+
+            items.forEach(item => {
+                let li = document.createElement("li");
+                li.innerHTML = `${item.title} - $${item.price}`;
+                itemList.appendChild(li);
+            });
+        }
+
+        fetchCategories(); // Load categories on page load
+    </script>
+</body>
+</html>
