@@ -1,10 +1,22 @@
 [
-    { "id": 1, "category": "Home & Garden" },
-    { "id": 2, "category": "Electronics" },
-    { "id": 3, "category": "Clothing" },
-    { "id": 4, "category": "Sports" },
-    { "id": 5, "category": "Food & Groceries" },
-    { "id": 6, "category": "Jewelry & Accessories" },
-    { "id": 7, "category": "Books & Stationery" },
-    { "id": 8, "category": "Traditional Indian Wear" }
-]
+    {
+       "id":1,
+       "category":"Home, Garden"
+    },
+    {
+       "id":2,
+       "category":"Electronics, Computers, Video Games"
+    },
+    {
+       "id":3,
+       "category":"Clothing"
+    },
+    {
+       "id":4,
+       "category":"Sports & Outdoors"
+    },
+    {
+       "id":5,
+       "category":"Pets"
+    }
+ ]

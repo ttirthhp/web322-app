@@ -1,21 +1,102 @@
 [
-    { "id": 1, "category": 1, "price": 29.99, "title": "Garden Chair" },
-    { "id": 2, "category": 1, "price": 99.99, "title": "Wooden Dining Table" },
-    { "id": 3, "category": 2, "price": 599.99, "title": "Smartphone" },
-    { "id": 4, "category": 2, "price": 299.99, "title": "Wireless Headphones" },
-    { "id": 5, "category": 3, "price": 19.99, "title": "T-Shirt" },
-    { "id": 6, "category": 3, "price": 49.99, "title": "Jeans" },
-    { "id": 7, "category": 4, "price": 49.99, "title": "Basketball" },
-    { "id": 8, "category": 4, "price": 89.99, "title": "Cricket Bat" },
-    { "id": 9, "category": 5, "price": 5.99, "title": "Basmati Rice (5kg)" },
-    { "id": 10, "category": 5, "price": 3.99, "title": "Masala Chai (Tea)" },
-    { "id": 11, "category": 5, "price": 2.49, "title": "Garam Masala Spice Mix" },
-    { "id": 12, "category": 5, "price": 7.99, "title": "Paneer (Indian Cottage Cheese)" },
-    { "id": 13, "category": 6, "price": 129.99, "title": "Gold Plated Necklace Set" },
-    { "id": 14, "category": 6, "price": 49.99, "title": "Silver Jhumka Earrings" },
-    { "id": 15, "category": 7, "price": 9.99, "title": "Notebook Set (5 pcs)" },
-    { "id": 16, "category": 7, "price": 19.99, "title": "Classic Literature Collection" },
-    { "id": 17, "category": 8, "price": 89.99, "title": "Men's Kurta Pajama" },
-    { "id": 18, "category": 8, "price": 119.99, "title": "Women's Saree (Silk)" },
-    { "id": 19, "category": 8, "price": 69.99, "title": "Women's Salwar Kameez" }
-]
+    {
+       "id":1,
+       "category":1,
+       "postDate":"2023-05-14",
+       "featureImage":"https://dummyimage.com/200x200/000/fff",
+       "price":9.99,
+       "title":"Lawnmower",
+       "body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras convallis fringilla sem efficitur congue. Vestibulum efficitur blandit ultricies. Sed tempus mollis orci id facilisis. Aliquam placerat, ipsum eget egestas malesuada, neque nunc scelerisque felis, ut egestas turpis augue ut nisi. Curabitur vel convallis augue.",
+       "published":true
+    },
+    {
+       "id":2,
+       "category":1,
+       "postDate":"2023-05-15",
+       "featureImage":"https://dummyimage.com/200x200/000/fff",
+       "price":19.99,
+       "title":"Weber BBQ",
+       "body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras convallis fringilla sem efficitur congue. Vestibulum efficitur blandit ultricies. Sed tempus mollis orci id facilisis. Aliquam placerat, ipsum eget egestas malesuada, neque nunc scelerisque felis, ut egestas turpis augue ut nisi. Curabitur vel convallis augue.",
+       "published":true
+    },
+    {
+       "id":3,
+       "category":2,
+       "postDate":"2023-05-16",
+       "featureImage":"https://dummyimage.com/200x200/000/fff",
+       "price":439.99,
+       "title":"PS5",
+       "body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras convallis fringilla sem efficitur congue. Vestibulum efficitur blandit ultricies. Sed tempus mollis orci id facilisis. Aliquam placerat, ipsum eget egestas malesuada, neque nunc scelerisque felis, ut egestas turpis augue ut nisi. Curabitur vel convallis augue.",
+       "published":true
+    },
+    {
+       "id":4,
+       "category":2,
+       "postDate":"2023-05-17",
+       "featureImage":"https://dummyimage.com/200x200/000/fff",
+       "price":459.99,
+       "title":"XBOX",
+       "body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras convallis fringilla sem efficitur congue. Vestibulum efficitur blandit ultricies. Sed tempus mollis orci id facilisis. Aliquam placerat, ipsum eget egestas malesuada, neque nunc scelerisque felis, ut egestas turpis augue ut nisi. Curabitur vel convallis augue.",
+       "published":true
+    },
+    {
+       "id":5,
+       "category":3,
+       "postDate":"2023-05-18",
+       "featureImage":"https://dummyimage.com/200x200/000/fff",
+       "price":39.99,
+       "title":"TShirt",
+       "body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras convallis fringilla sem efficitur congue. Vestibulum efficitur blandit ultricies. Sed tempus mollis orci id facilisis. Aliquam placerat, ipsum eget egestas malesuada, neque nunc scelerisque felis, ut egestas turpis augue ut nisi. Curabitur vel convallis augue.",
+       "published":true
+    },
+    {
+       "id":6,
+       "category":3,
+       "postDate":"2023-05-19",
+       "featureImage":"https://dummyimage.com/200x200/000/fff",
+       "price":29.99,
+       "title":"Shorts",
+       "body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras convallis fringilla sem efficitur congue. Vestibulum efficitur blandit ultricies. Sed tempus mollis orci id facilisis. Aliquam placerat, ipsum eget egestas malesuada, neque nunc scelerisque felis, ut egestas turpis augue ut nisi. Curabitur vel convallis augue.",
+       "published":true
+    },
+    {
+       "id":7,
+       "category":4,
+       "postDate":"2023-05-20",
+       "featureImage":"https://dummyimage.com/200x200/000/fff",
+       "price":19.99,
+       "title":"Baseball",
+       "body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras convallis fringilla sem efficitur congue. Vestibulum efficitur blandit ultricies. Sed tempus mollis orci id facilisis. Aliquam placerat, ipsum eget egestas malesuada, neque nunc scelerisque felis, ut egestas turpis augue ut nisi. Curabitur vel convallis augue.",
+       "published":true
+    },
+    {
+       "id":8,
+       "category":4,
+       "postDate":"2023-05-21",
+       "featureImage":"https://dummyimage.com/200x200/000/fff",
+       "price":99.99,
+       "title":"Soccer Ball",
+       "body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras convallis fringilla sem efficitur congue. Vestibulum efficitur blandit ultricies. Sed tempus mollis orci id facilisis. Aliquam placerat, ipsum eget egestas malesuada, neque nunc scelerisque felis, ut egestas turpis augue ut nisi. Curabitur vel convallis augue.",
+       "published":true
+    },
+    {
+       "id":9,
+       "category":5,
+       "postDate":"2023-05-16",
+       "featureImage":"https://dummyimage.com/200x200/000/fff",
+       "price":99.99,
+       "title":"Dog Food",
+       "body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras convallis fringilla sem efficitur congue. Vestibulum efficitur blandit ultricies. Sed tempus mollis orci id facilisis. Aliquam placerat, ipsum eget egestas malesuada, neque nunc scelerisque felis, ut egestas turpis augue ut nisi. Curabitur vel convallis augue.",
+       "published":true
+    },
+    {
+       "id":10,
+       "category":5,
+       "postDate":"2023-05-16",
+       "featureImage":"https://dummyimage.com/200x200/000/fff",
+       "price":9.99,
+       "title":"Fish Food",
+       "body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras convallis fringilla sem efficitur congue. Vestibulum efficitur blandit ultricies. Sed tempus mollis orci id facilisis. Aliquam placerat, ipsum eget egestas malesuada, neque nunc scelerisque felis, ut egestas turpis augue ut nisi. Curabitur vel convallis augue.",
+       "published":true
+    }
+ ] 
