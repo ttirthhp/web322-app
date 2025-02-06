@@ -1,44 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>eCommerce Store</title>
-    <link rel="stylesheet" href="/css/styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home - eCommerce Store</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <h1>Welcome to Our Store</h1>
-    
-    <h2>Categories</h2>
-    <ul id="category-list"></ul>
+    <!-- Navigation -->
+    <nav>
+        <a href="/">Home</a>
+        <a href="/shop">Shop</a>
+        <a href="/items">Items</a>
+        <a href="/categories">Categories</a>
+    </nav>
 
-    <h2>Items</h2>
-    <ul id="item-list"></ul>
+    <!-- Hero Section -->
+    <h1>Welcome to Our Store</h1>
+
+    <!-- Categories Section -->
+    <div class="content-section">
+        <h2>Categories</h2>
+        <div class="grid-container" id="category-list"></div>
+    </div>
+
+    <!-- Items Section -->
+    <div class="content-section">
+        <h2>Featured Items</h2>
+        <div class="grid-container" id="item-list"></div>
+    </div>
 
     <script>
         async function fetchCategories() {
-            const res = await fetch('/categories');
-            const categories = await res.json();
-            const categoryList = document.getElementById("category-list");
+            try {
+                const res = await fetch('/categories');
+                if (!res.ok) throw new Error("Failed to fetch categories");
+                const categories = await res.json();
+                const categoryList = document.getElementById("category-list");
 
-            categories.forEach(category => {
-                let li = document.createElement("li");
-                li.innerHTML = `<a href="#" onclick="fetchItems(${category.id})">${category.category}</a>`;
-                categoryList.appendChild(li);
-            });
+                categories.forEach(category => {
+                    let div = document.createElement("div");
+                    div.classList.add("card");
+                    div.innerHTML = `<a href="javascript:void(0)" onclick="fetchItems(${category.id})">${category.category}</a>`;
+                    categoryList.appendChild(div);
+                });
+            } catch (error) {
+                console.error("Error loading categories:", error);
+                document.getElementById("category-list").innerHTML = "<p>Error loading categories.</p>";
+            }
         }
 
         async function fetchItems(categoryId) {
-            const res = await fetch(`/items/${categoryId}`);
-            const items = await res.json();
-            const itemList = document.getElementById("item-list");
-            itemList.innerHTML = ""; // Clear previous items
+            try {
+                const res = await fetch(`/items/${categoryId}`);
+                if (!res.ok) throw new Error("Failed to fetch items");
+                const items = await res.json();
+                const itemList = document.getElementById("item-list");
+                itemList.innerHTML = "";
 
-            items.forEach(item => {
-                let li = document.createElement("li");
-                li.innerHTML = `${item.title} - $${item.price}`;
-                itemList.appendChild(li);
-            });
+                if (items.length === 0) {
+                    itemList.innerHTML = "<p>No items found in this category.</p>";
+                    return;
+                }
+
+                items.forEach(item => {
+                    let div = document.createElement("div");
+                    div.classList.add("card");
+                    div.innerHTML = `<a href="#">${item.title} - $${item.price}</a>`;
+                    itemList.appendChild(div);
+                });
+            } catch (error) {
+                console.error("Error loading items:", error);
+                document.getElementById("item-list").innerHTML = "<p>Error loading items.</p>";
+            }
         }
 
         fetchCategories(); // Load categories on page load
