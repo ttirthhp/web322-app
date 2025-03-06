@@ -44,19 +44,9 @@ app.get("/shop", (req, res) => {
 });
 
 app.get("/items", (req, res) => {
-    if (req.query.category) {
-        storeService.getItemsByCategory(req.query.category)
-            .then(data => res.json(data))
-            .catch(err => res.status(404).json({ message: err }));
-    } else if (req.query.minDate) {
-        storeService.getItemsByMinDate(req.query.minDate)
-            .then(data => res.json(data))
-            .catch(err => res.status(404).json({ message: err }));
-    } else {
-        storeService.getAllItems()
-            .then(data => res.json(data))
-            .catch(err => res.status(404).json({ message: err }));
-    }
+    storeService.getAllItems()
+        .then(data => res.json(data))
+        .catch(err => res.status(404).json({ message: err }));
 });
 
 app.get("/categories", (req, res) => {
@@ -94,21 +84,17 @@ app.post("/items/add", upload.single("featureImage"), async (req, res) => {
             .then(() => res.redirect("/items"))
             .catch(err => {
                 console.error("Item processing error:", err);
-                res.status(500).send(err);
+                res.status(404).send(err);
             });
     }
 
     processItem(imageUrl);
 });
 
-app.get("/item/:id", (req, res) => {
+app.get("/items/:id", (req, res) => {
     storeService.getItemById(req.params.id)
         .then(data => res.json(data))
-        .catch(err => res.status(404).json({ message: err }));
-});
-
-app.use((req, res) => {
-    res.status(404).sendFile(path.join(__dirname, "views/404.html"));
+        .catch(err => res.status(404).json({ message: "Item not found." }));
 });
 
 storeService.initialize()

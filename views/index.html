@@ -55,7 +55,7 @@
 
         async function fetchItems(categoryId) {
             try {
-                const res = await fetch(`/items/${categoryId}`);
+                const res = await fetch(`/items?category=${categoryId}`);
                 if (!res.ok) throw new Error("Failed to fetch items");
                 const items = await res.json();
                 const itemList = document.getElementById("item-list");
@@ -67,11 +67,13 @@
                 }
 
                 items.forEach(item => {
-                    let div = document.createElement("div");
-                    div.classList.add("card");
-                    div.innerHTML = `<a href="#">${item.title} - $${item.price}</a>`;
-                    itemList.appendChild(div);
-                });
+                    if (item.category == categoryId) { // ✅ Filtering by category
+                let div = document.createElement("div");
+                div.classList.add("card");
+                div.innerHTML = `<a href="#">${item.title} - $${item.price}</a>`;
+                itemList.appendChild(div);
+            }
+        });
             } catch (error) {
                 console.error("Error loading items:", error);
                 document.getElementById("item-list").innerHTML = "<p>Error loading items.</p>";
@@ -81,4 +83,3 @@
         fetchCategories(); // Load categories on page load
     </script>
 </body>
-</html>

@@ -20,21 +20,11 @@ function readJSONFile(filePath) {
     });
 }
 
-function initialize() {
-    return new Promise((resolve, reject) => {
-        Promise.all([
-            readJSONFile(path.join(__dirname, "data", "items.json")),
-            readJSONFile(path.join(__dirname, "data", "categories.json"))
-        ]).then(([itemsData, categoriesData]) => {
-            items = itemsData;
-            categories = categoriesData;
-            resolve();
-        }).catch(err => reject(err));
-    });
-}
+
 
 function getAllItems() {
     return new Promise((resolve, reject) => {
+        console.log("Items Fetched:", JSON.stringify(items, null, 2));
         if (items.length > 0) {
             resolve(items);
         } else {
@@ -70,18 +60,22 @@ function addItem(itemData) {
             reject("Missing required fields");
             return;
         }
-        
-        if (itemData.published === undefined) {
-            itemData.published = false;
-        } else {
-            itemData.published = true;
-        }
 
-        itemData.id = items.length + 1;
+        itemData.published = itemData.published === "true"; // Ensure boolean value
+        itemData.id = items.length + 1; // Auto-increment ID
         items.push(itemData);
-        resolve(itemData);
+
+        // Write updated items back to the JSON file
+        fs.writeFile(path.join(__dirname, "data", "items.json"), JSON.stringify(items, null, 2), (err) => {
+            if (err) {
+                reject("Error saving item to file.");
+                return;
+            }
+            resolve(itemData);
+        });
     });
 }
+
 
 function getItemsByCategory(category) {
     return new Promise((resolve, reject) => {
@@ -113,6 +107,23 @@ function getItemById(id) {
         } else {
             reject("No result returned");
         }
+    });
+}
+
+function initialize() {
+    return new Promise((resolve, reject) => {
+        Promise.all([
+            readJSONFile(path.join(__dirname, "data", "items.json")),
+            readJSONFile(path.join(__dirname, "data", "categories.json"))
+        ]).then(([itemsData, categoriesData]) => {
+            items = itemsData;
+            categories = categoriesData;
+            console.log("Data Loaded Successfully");
+            resolve();
+        }).catch(err => {
+            console.error("Error initializing data:", err);
+            reject(err);
+        });
     });
 }
 
