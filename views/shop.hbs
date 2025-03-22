@@ -1,0 +1,49 @@
+<div class="row">
+  <!-- Main Item Section -->
+  <section class="main col-md-9">
+    {{#if data.post}}
+      <div class="card mb-4">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="{{data.post.featureImage}}" alt="Feature Image" class="img-fluid rounded-start" />
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h3 class="card-title">{{data.post.title}}</h3>
+              <p class="card-text">{{#safeHTML data.post.body}}{{/safeHTML}}</p>
+              <p class="card-text"><strong>Price:</strong> ${{data.post.price}}</p>
+              <p class="card-text"><strong>Category:</strong> {{data.post.category}}</p>
+              <p class="card-text"><strong>Posted On:</strong> {{data.post.postDate}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    {{else}}
+      <div class="text-center my-5">
+        <h2>{{data.message}}</h2>
+        <p>Please try another item or category.</p>
+      </div>
+    {{/if}}
+  </section>
+
+  <!-- Sidebar Section -->
+  <aside class="col-md-3">
+    {{#if data.posts}}
+      <h4>Other Items</h4>
+      <ul class="list-group mb-4">
+        {{#each data.posts}}
+          <a href="/shop/{{this.id}}?category={{../data.viewingCategory}}" class="list-group-item">{{this.title}}</a>
+        {{/each}}
+      </ul>
+    {{/if}}
+
+    {{#if data.categories}}
+      <h4>Categories</h4>
+      <ul class="list-group">
+        {{#each data.categories}}
+          <a href="/shop?category={{this.id}}" class="list-group-item">{{this.category}}</a>
+        {{/each}}
+      </ul>
+    {{/if}}
+  </aside>
+</div>
