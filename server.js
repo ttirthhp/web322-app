@@ -4,7 +4,7 @@
 * of this assignment has been copied manually or electronically from any other source
 * (including 3rd party web sites) or distributed to other students.
 *
-* Name: Meet Shah Student ID: 176929230 Date: 2025-03-21
+* Name: Tirth Patel Student ID: 176929230 Date: 2025-03-21
 *
 * GitHub Repository URL: https://github.senecapolytechnic.ca/tapatel16/web322-app
 *
