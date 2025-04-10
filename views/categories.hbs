@@ -1,20 +1,36 @@
 <div class="row">
   <div class="col-md-12">
     <h2>Categories</h2>
+    <a href="/categories/add" class="btn btn-success mb-3 float-end">Add Category</a>
     <hr />
 
-    {{#if categories.length}}
-      <ul class="list-group">
-        {{#each categories}}
-          <li class="list-group-item">
-            <a href="/items?category={{this.id}}">{{this.category}}</a>
-          </li>
-        {{/each}}
-      </ul>
+    {{#if categories}}
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+          <tr>
+            <th>Category ID</th>
+            <th>Category Name</th>
+            <th></th> <!-- For Remove button -->
+          </tr>
+        </thead>
+        <tbody>
+          {{#each categories}}
+          <tr>
+            <td>{{id}}</td>
+            <td>{{category}}</td>
+            <td>
+              <a href="/categories/delete/{{id}}" class="btn btn-danger btn-sm">Remove</a>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
     {{else}}
-      <p class="text-muted text-center mt-4">
-        <strong>{{message}}</strong>
-      </p>
+    <div class="text-center mt-4">
+      <strong>{{message}}</strong>
+    </div>
     {{/if}}
   </div>
 </div>

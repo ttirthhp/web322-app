@@ -1,20 +1,17 @@
 <div class="row">
   <div class="col-md-12">
     <h2>Items</h2>
+    <a href="/Items/add" class="btn btn-success mb-3 float-end">Add Post</a>
     <hr />
 
     <!-- Filter Dropdown -->
-    <form method="GET" action="/items" class="mb-3">
-      <label for="category" class="form-label">Filter by Category:</label>
-      <select name="category" id="category" class="form-select w-auto d-inline-block" onchange="this.form.submit()">
-        <option value="">All Categories</option>
-        <option value="1">Home, Garden</option>
-        <option value="2">Electronics</option>
-        <option value="3">Clothing</option>
-        <option value="4">Sports</option>
-        <option value="5">Pets</option>
-      </select>
-    </form>
+<select name="category" id="category" class="form-select w-auto d-inline-block" onchange="this.form.submit()">
+  <option value="">All Categories</option>
+  {{#each categories}}
+    <option value="{{id}}" {{#ifEquals ../viewingCategory id}}selected{{/ifEquals}}>{{category}}</option>
+  {{/each}}
+</select>
+
 
     {{#if items.length}}
     <div class="table-responsive">
@@ -28,6 +25,7 @@
             <th>Category</th>
             <th>Post Date</th>
             <th>Published</th>
+            <th></th> <!-- Remove column -->
           </tr>
         </thead>
         <tbody>
@@ -37,9 +35,12 @@
             <td>{{title}}</td>
             <td><img src="{{featureImage}}" alt="{{title}}" width="100"></td>
             <td>${{price}}</td>
-            <td><a href="/items?category={{category}}">{{category}}</a></td>
-            <td>{{postDate}}</td>
+            <td><a href="/items?category={{category}}">{{Category.category}}</a></td>
+            <td>{{#formatDate postDate}}{{/formatDate}}</td>
             <td>{{#if published}}Yes{{else}}No{{/if}}</td>
+            <td>
+              <a href="/Items/delete/{{id}}" class="btn btn-danger btn-sm">Remove</a>
+            </td>
           </tr>
           {{/each}}
         </tbody>

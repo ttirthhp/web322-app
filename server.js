@@ -22,21 +22,32 @@ const streamifier = require("streamifier");
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-// Handlebars setup
 app.engine(".hbs", exphbs.engine({
     extname: ".hbs",
     helpers: {
         navLink: function (url, options) {
-            return '<li' + ((url == app.locals.activeRoute) ? ' class="active"' : '') + '><a href="' + url + '">' + options.fn(this) + '</a></li>';
+            return '<li' + ((url == app.locals.activeRoute) ? ' class="active"' : '') +
+                '><a href="' + url + '">' + options.fn(this) + '</a></li>';
         },
         equal: function (lvalue, rvalue, options) {
             return (lvalue != rvalue) ? options.inverse(this) : options.fn(this);
         },
         safeHTML: function (context) {
             return context;
+        },
+        formatDate: function (dateObj) {
+            let year = dateObj.getFullYear();
+            let month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
+            let day = dateObj.getDate().toString().padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        },
+        ifEquals: function (a, b, options) {
+            return a == b ? options.fn(this) : options.inverse(this);
         }
     }
 }));
+
+
 app.set("view engine", ".hbs");
 
 // Middleware
@@ -111,27 +122,28 @@ app.get("/shop/:id", async (req, res) => {
     }
 });
 
-app.get("/items", async (req, res) => {
+
+  app.get("/items", async (req, res) => {
     try {
-        let items;
-        if (req.query.category) {
-            items = await storeService.getItemsByCategory(req.query.category);
-        } else if (req.query.minDate) {
-            items = await storeService.getItemsByMinDate(req.query.minDate);
-        } else {
-            items = await storeService.getAllItems();
-        }
-
-        if (items.length > 0) {
-            res.render("items", { items: items });
-        } else {
-            res.render("items", { message: "No results found" });
-        }
+      const categories = await storeService.getCategories();
+      let items;
+  
+      if (req.query.category) {
+        items = await storeService.getItemsByCategory(req.query.category);
+      } else {
+        items = await storeService.getAllItems();
+      }
+  
+      res.render("items", {
+        items,
+        categories,
+        viewingCategory: req.query.category
+      });
     } catch (err) {
-        res.status(500).render("items", { message: err.message || "Error fetching items" });
+      res.status(500).render("items", { message: "Error fetching items" });
     }
-});
-
+  });
+  
 app.get("/item/:id", async (req, res) => {
     try {
         const item = await storeService.getItemById(req.params.id);
@@ -155,9 +167,16 @@ app.get("/categories", async (req, res) => {
     }
 });
 
-app.get("/items/add", (req, res) => {
-    res.render("addItem");
+app.get("/Items/add", (req, res) => {
+    storeService.getCategories()
+        .then((data) => {
+            res.render("addPost", { categories: data });
+        })
+        .catch(() => {
+            res.render("addPost", { categories: [] });
+        });
 });
+
 
 app.post("/items/add", upload.single("featureImage"), async (req, res) => {
     try {
@@ -193,6 +212,41 @@ app.post("/items/add", upload.single("featureImage"), async (req, res) => {
     }
 });
 
+app.get("/categories/add", (req, res) => {
+    res.render("addCategory");
+});
+
+app.post("/categories/add", (req, res) => {
+    storeService.addCategory(req.body)
+        .then(() => {
+            res.redirect("/categories");
+        })
+        .catch((err) => {
+            res.status(500).send("Unable to add category");
+        });
+});
+
+app.get("/categories/delete/:id", (req, res) => {
+    storeService.deleteCategoryById(req.params.id)
+        .then(() => {
+            res.redirect("/categories");
+        })
+        .catch(() => {
+            res.status(500).send("Unable to Remove Category / Category not found");
+        });
+});
+
+app.get("/Items/delete/:id", (req, res) => {
+    storeService.deletePostById(req.params.id)
+        .then(() => {
+            res.redirect("/Items");
+        })
+        .catch(() => {
+            res.status(500).send("Unable to Remove Post / Post not found");
+        });
+});
+
+
 app.use((req, res) => {
     res.status(404).render("404");
 });
@@ -200,9 +254,9 @@ app.use((req, res) => {
 storeService.initialize()
     .then(() => {
         app.listen(PORT, () => {
-            console.log(`✅ Server running on http://localhost:${PORT}`);
+            console.log(`Server running on http://localhost:${PORT}`);
         });
     })
     .catch((err) => {
-        console.error(`❌ Failed to initialize store service: ${err}`);
+        console.error(`Failed to initialize store service: ${err}`);
     });
