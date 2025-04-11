@@ -1,9 +1,10 @@
 <h2>Add Category</h2>
 
-<form action="/categories/add" method="POST">
-    <div class="form-group">
-        <label for="category">Category:</label>
-        <input autofocus type="text" class="form-control" id="category" name="category" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Add Category</button>
+<form method="POST" action="/categories/add">
+  <div class="form-group">
+    <label for="category">Category:</label>
+    <input type="text" class="form-control" name="category" id="category" autofocus required>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Add Category</button>
 </form>

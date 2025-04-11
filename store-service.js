@@ -1,17 +1,20 @@
 const Sequelize = require('sequelize');
+require("dotenv").config();
 
-const sequelize = new Sequelize('neondb', 'neondb_owner', 'npg_Dh4aqufVjz7g', {
-  host: 'ep-sweet-queen-a5uveu0i-pooler.us-east-2.aws.neon.tech',
-  dialect: 'postgres',
-  port: 5432,
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false
+const sequelize = new Sequelize(
+    process.env.DB_DATABASE,
+    process.env.DB_USER,
+    process.env.DB_PASSWORD,
+    {
+        host: process.env.DB_HOST,
+        dialect: 'postgres',
+        port: process.env.DB_PORT,
+        dialectOptions: {
+            ssl: { rejectUnauthorized: false }
+        },
+        query: { raw: true }
     }
-  },
-  query: { raw: true }
-});
+);
 
 
 // Define the Category model
@@ -50,7 +53,6 @@ module.exports.initialize = function () {
 module.exports.getAllItems = function () {
   return new Promise((resolve, reject) => {
     Item.findAll({
-      include: [Category]
     })
     .then((data) => {
       if (data.length > 0) {
@@ -114,7 +116,8 @@ module.exports.getItemsByMinDate = function (minDateStr) {
 module.exports.getItemById = function (id) {
   return new Promise((resolve, reject) => {
       Item.findAll({
-          where: { id: id }
+          where: { id: id },
+          include: [Category]
       })
       .then((data) => {
           if (data.length > 0) {
@@ -139,6 +142,10 @@ module.exports.addItem = function (itemData) {
               itemData[prop] = null;
           }
       }
+
+      if (itemData.category) {
+        itemData.category = parseInt(itemData.category);
+    }
 
       itemData.postDate = new Date();
 
