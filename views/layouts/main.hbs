@@ -33,10 +33,30 @@
           <li class="nav-item">{{#navLink "/about"}}About{{/navLink}}</li>
         </ul>
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item">{{#navLink "/items"}}Items{{/navLink}}</li>
-          <li class="nav-item">{{#navLink "/categories"}}Categories{{/navLink}}</li>
-          <li class="nav-item">{{#navLink "/items/add"}}Add Item{{/navLink}}</li>
-        </ul>
+  {{#if session.user}}
+    <li class="nav-item">{{#navLink "/items"}}Items{{/navLink}}</li>
+    <li class="nav-item">{{#navLink "/categories"}}Categories{{/navLink}}</li>
+    <li class="nav-item">{{#navLink "/items/add"}}Add Item{{/navLink}}</li>
+
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+        {{session.user.userName}}
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li><a class="dropdown-item" href="/userHistory">User History</a></li>
+        <li><a class="dropdown-item" href="/logout">Logout</a></li>
+      </ul>
+    </li>
+  {{else}}
+    <li class="nav-item">
+      <a href="/register" class="btn btn-success me-2">Register</a>
+    </li>
+    <li class="nav-item">
+      <a href="/login" class="btn btn-primary">Login</a>
+    </li>
+  {{/if}}
+</ul>
+
       </div>
     </div>
   </nav>

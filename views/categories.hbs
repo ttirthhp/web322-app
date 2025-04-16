@@ -1,8 +1,21 @@
 <h2>Categories</h2>
+
 <a href="/categories/add" class="btn btn-success pull-right">Add Category</a>
 
+{{#if successMessage}}
+  <div class="alert alert-success">
+    <strong>Success:</strong> {{successMessage}}
+  </div>
+{{/if}}
+
+{{#if errorMessage}}
+  <div class="alert alert-danger">
+    <strong>Error:</strong> {{errorMessage}}
+  </div>
+{{/if}}
+
 {{#if categories}}
-  <table class="table">
+  <table class="table table-striped">
     <thead>
       <tr>
         <th>Category</th>
@@ -21,5 +34,5 @@
     </tbody>
   </table>
 {{else}}
-  <div>No Categories</div>
+  <div class="alert alert-warning">No categories found. <a href="/categories/add">Add one now</a>.</div>
 {{/if}}

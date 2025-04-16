@@ -1,9 +1,21 @@
 <h2>Add Category</h2>
 
+{{#if successMessage}}
+  <div class="alert alert-success">
+    <strong>Success:</strong> {{successMessage}}
+  </div>
+{{/if}}
+
+{{#if errorMessage}}
+  <div class="alert alert-danger">
+    <strong>Error:</strong> {{errorMessage}}
+  </div>
+{{/if}}
+
 <form method="POST" action="/categories/add">
   <div class="form-group">
     <label for="category">Category:</label>
-    <input type="text" class="form-control" name="category" id="category" autofocus required>
+    <input type="text" class="form-control" name="category" id="category" placeholder="Enter category name" required>
   </div>
 
   <button type="submit" class="btn btn-primary">Add Category</button>

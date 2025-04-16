@@ -1,8 +1,21 @@
 <h2>Items</h2>
-<a href="/Items/add" class="btn btn-success pull-right">Add Post</a>
+
+<a href="/Items/add" class="btn btn-success pull-right">Add Item</a>
+
+{{#if successMessage}}
+  <div class="alert alert-success">
+    <strong>Success:</strong> {{successMessage}}
+  </div>
+{{/if}}
+
+{{#if errorMessage}}
+  <div class="alert alert-danger">
+    <strong>Error:</strong> {{errorMessage}}
+  </div>
+{{/if}}
 
 {{#if items}}
-  <table class="table">
+  <table class="table table-striped">
     <thead>
       <tr>
         <th>Title</th>
@@ -29,5 +42,5 @@
     </tbody>
   </table>
 {{else}}
-  <div>No Items</div>
+  <div class="alert alert-warning">No items available. <a href="/Items/add">Add a new item</a> to get started.</div>
 {{/if}}

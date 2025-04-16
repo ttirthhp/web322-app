@@ -1,268 +1,156 @@
-const Sequelize = require('sequelize');
+const { MongoClient, ObjectId } = require("mongodb");
 require("dotenv").config();
 
-const sequelize = new Sequelize(
-    process.env.DB_DATABASE,
-    process.env.DB_USER,
-    process.env.DB_PASSWORD,
-    {
-        host: process.env.DB_HOST,
-        dialect: 'postgres',
-        port: process.env.DB_PORT,
-        dialectOptions: {
-            ssl: { rejectUnauthorized: false }
-        },
-        query: { raw: true }
-    }
-);
-
-
-// Define the Category model
-const Category = sequelize.define('Category', {
-  category: Sequelize.STRING
-});
-
-// Define the Item model
-const Item = sequelize.define('Item', {
-  body: Sequelize.TEXT,
-  title: Sequelize.STRING,
-  postDate: Sequelize.DATE,
-  featureImage: Sequelize.STRING,
-  published: Sequelize.BOOLEAN,
-  price: Sequelize.DOUBLE,
-  category: Sequelize.INTEGER
-});
-
-// Set up relationship
-Item.belongsTo(Category, { foreignKey: 'category' });
-
+let db;
+let itemsCollection;
+let categoriesCollection;
 
 module.exports.initialize = function () {
   return new Promise((resolve, reject) => {
-    sequelize.sync()
-      .then(() => {
+    MongoClient.connect(process.env.MONGO_CONN_STRING)
+      .then(client => {
+        db = client.db("web322"); // or your actual DB name
+        itemsCollection = db.collection("items");
+        categoriesCollection = db.collection("categories");
+        console.log(" store-service connected to MongoDB");
         resolve();
       })
-      .catch((err) => {
-        reject("unable to sync the database: " + err);
+      .catch(err => {
+        reject("Unable to connect to MongoDB in store-service");
       });
   });
 };
 
 
-module.exports.getAllItems = function () {
-  return new Promise((resolve, reject) => {
-    Item.findAll({
-    })
-    .then((data) => {
-      if (data.length > 0) {
-        resolve(data);
-      } else {
-        reject("no results returned");
-      }
-    })
-    .catch(() => {
-      reject("no results returned");
-    });
-  });
-};
-
-
-
-module.exports.getItemsByCategory = function (category) {
-  return new Promise((resolve, reject) => {
-      Item.findAll({
-          where: { category: category },
-          include: [Category]
-      })
-      .then((data) => {
-          if (data.length > 0) {
-              resolve(data);
-          } else {
-              reject("no results returned");
-          }
-      })
-      .catch((err) => {
-          reject("no results returned");
-      });
-  });
-};
-
-const { gte } = Sequelize.Op;
-
-module.exports.getItemsByMinDate = function (minDateStr) {
-    return new Promise((resolve, reject) => {
-        Item.findAll({
-            where: {
-                postDate: {
-                    [gte]: new Date(minDateStr)
-                }
-            }
-        })
-        .then((data) => {
-            if (data.length > 0) {
-                resolve(data);
-            } else {
-                reject("no results returned");
-            }
-        })
-        .catch((err) => {
-            reject("no results returned");
-        });
-    });
-};
-
-
-module.exports.getItemById = function (id) {
-  return new Promise((resolve, reject) => {
-      Item.findAll({
-          where: { id: id },
-          include: [Category]
-      })
-      .then((data) => {
-          if (data.length > 0) {
-              resolve(data[0]); // Return only the first item
-          } else {
-              reject("no results returned");
-          }
-      })
-      .catch((err) => {
-          reject("no results returned");
-      });
-  });
-};
-
-
+// Add item
 module.exports.addItem = function (itemData) {
   return new Promise((resolve, reject) => {
-      itemData.published = (itemData.published) ? true : false;
-
-      for (let prop in itemData) {
-          if (itemData[prop] === "") {
-              itemData[prop] = null;
-          }
-      }
-
-      if (itemData.category) {
-        itemData.category = parseInt(itemData.category);
+    itemData.published = itemData.published ? true : false;
+    for (let prop in itemData) {
+      if (itemData[prop] === "") itemData[prop] = null;
     }
+    itemData.postDate = new Date();
 
-      itemData.postDate = new Date();
-
-      Item.create(itemData)
-          .then(() => {
-              resolve();
-          })
-          .catch((err) => {
-              reject("unable to create post");
-          });
+    itemsCollection.insertOne(itemData)
+      .then(() => resolve())
+      .catch((err) => {
+        console.error("Error creating item:", err);
+        reject("unable to create post");
+      });
   });
 };
 
+// Get all items
+module.exports.getAllItems = function () {
+  return new Promise((resolve, reject) => {
+    itemsCollection.find({}).toArray()
+      .then(data => resolve(data))
+      .catch(err => {
+        console.error(" getAllItems error:", err);
+        reject("no results returned");
+      });
+  });
+};
 
+// Get item by ID
+module.exports.getItemById = function (id) {
+  return new Promise((resolve, reject) => {
+    itemsCollection.findOne({ _id: new ObjectId(id) })
+      .then(data => data ? resolve(data) : reject("no results returned"))
+      .catch(err => {
+        console.error("getItemById error:", err);
+        reject("no results returned");
+      });
+  });
+};
+
+// Get items by category
+module.exports.getItemsByCategory = function (category) {
+  return new Promise((resolve, reject) => {
+    itemsCollection.find({ category }).toArray()
+      .then(data => resolve(data))
+      .catch(err => {
+        console.error("getItemsByCategory error:", err);
+        reject("no results returned");
+      });
+  });
+};
+
+// Get items by min date
+module.exports.getItemsByMinDate = function (minDateStr) {
+  return new Promise((resolve, reject) => {
+    itemsCollection.find({ postDate: { $gte: new Date(minDateStr) } }).toArray()
+      .then(data => resolve(data))
+      .catch(err => {
+        console.error("getItemsByMinDate error:", err);
+        reject("no results returned");
+      });
+  });
+};
+
+// Get published items
 module.exports.getPublishedItems = function () {
   return new Promise((resolve, reject) => {
-      Item.findAll({
-          where: { published: true }
-      })
-      .then((data) => {
-          if (data.length > 0) {
-              resolve(data);
-          } else {
-              reject("no results returned");
-          }
-      })
-      .catch((err) => {
-          reject("no results returned");
+    itemsCollection.find({ published: true }).toArray()
+      .then(data => resolve(data))
+      .catch(err => {
+        console.error("getPublishedItems error:", err);
+        reject("no results returned");
       });
   });
 };
 
-
+// Get published items by category
 module.exports.getPublishedItemsByCategory = function (category) {
   return new Promise((resolve, reject) => {
-      Item.findAll({
-          where: {
-              published: true,
-              category: category
-          }
-      })
-      .then((data) => {
-          if (data.length > 0) {
-              resolve(data);
-          } else {
-              reject("no results returned");
-          }
-      })
-      .catch((err) => {
-          reject("no results returned");
+    itemsCollection.find({ category: this.deleteCategoryById.toString(), published: true }).toArray()
+      .then(data => resolve(data))
+      .catch(err => {
+        console.error(" getPublishedItemsByCategory error:", err);
+        reject("no results returned");
       });
   });
 };
 
-
+// Get all categories
 module.exports.getCategories = function () {
   return new Promise((resolve, reject) => {
-      Category.findAll()
-          .then((data) => {
-              if (data.length > 0) {
-                  resolve(data);
-              } else {
-                  reject("no results returned");
-              }
-          })
-          .catch((err) => {
-              reject("no results returned");
-          });
+    categoriesCollection.find({}).toArray()
+      .then(data => resolve(data))
+      .catch(() => reject("no results returned"));
   });
 };
 
-
+// Add category
 module.exports.addCategory = function (categoryData) {
   return new Promise((resolve, reject) => {
-      for (let prop in categoryData) {
-          if (categoryData[prop] === "") {
-              categoryData[prop] = null;
-          }
-      }
+    for (let prop in categoryData) {
+      if (categoryData[prop] === "") categoryData[prop] = null;
+    }
 
-      Category.create(categoryData)
-          .then(() => {
-              resolve();
-          })
-          .catch((err) => {
-              reject("unable to create category");
-          });
+    categoriesCollection.insertOne(categoryData)
+      .then(() => resolve())
+      .catch(err => {
+        console.error(" addCategory error:", err);
+        reject("unable to create category");
+      });
   });
 };
 
-
+// Delete category
 module.exports.deleteCategoryById = function (id) {
   return new Promise((resolve, reject) => {
-      Category.destroy({
-          where: { id: id }
-      })
-      .then(() => {
-          resolve();
-      })
-      .catch((err) => {
-          reject("unable to delete category");
-      });
+    categoriesCollection.deleteOne({ _id: new ObjectId(id) })
+      .then(() => resolve())
+      .catch(() => reject("unable to delete category"));
   });
 };
 
-
+// Delete item
 module.exports.deletePostById = function (id) {
   return new Promise((resolve, reject) => {
-      Item.destroy({
-          where: { id: id }
-      })
-      .then(() => {
-          resolve();
-      })
-      .catch((err) => {
-          reject("unable to delete post");
-      });
+    itemsCollection.deleteOne({ _id: new ObjectId(id) })
+      .then(() => resolve())
+      .catch(() => reject("unable to delete post"));
   });
 };
-

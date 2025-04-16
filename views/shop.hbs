@@ -12,8 +12,13 @@
               <h3 class="card-title">{{data.post.title}}</h3>
               <p class="card-text">{{#safeHTML data.post.body}}{{/safeHTML}}</p>
               <p class="card-text"><strong>Price:</strong> ${{data.post.price}}</p>
-              <p class="card-text"><strong>Category:</strong> {{data.post.category}}</p>
-              <p class="card-text"><strong>Posted On:</strong> {{data.post.postDate}}</p>
+              <p class="card-text">
+                <strong>Category:</strong>
+                {{#each data.categories}}
+                  {{#ifCond ../data.post.category "==" this.id}}{{this.category}}{{/ifCond}}
+                {{/each}}
+              </p>
+              <p class="card-text"><strong>Posted On:</strong> {{formatDate data.post.postDate}}</p>
             </div>
           </div>
         </div>
@@ -32,7 +37,7 @@
       <h4>Other Items</h4>
       <ul class="list-group mb-4">
         {{#each data.posts}}
-          <a href="/shop/{{this.id}}?category={{../data.viewingCategory}}" class="list-group-item">{{this.title}}</a>
+          <a href="/shop/{{this._id}}?category={{../data.viewingCategory}}" class="list-group-item">{{this.title}}</a>
         {{/each}}
       </ul>
     {{/if}}
@@ -41,7 +46,7 @@
       <h4>Categories</h4>
       <ul class="list-group">
         {{#each data.categories}}
-          <a href="/shop?category={{this.id}}" class="list-group-item">{{this.category}}</a>
+          <a href="/shop?category={{this._id}}" class="list-group-item">{{this.category}}</a>
         {{/each}}
       </ul>
     {{/if}}

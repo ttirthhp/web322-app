@@ -1,42 +1,55 @@
 <h2>Add New Item</h2>
 
+{{#if successMessage}}
+  <div class="alert alert-success">
+    <strong>Success:</strong> {{successMessage}}
+  </div>
+{{/if}}
+
+{{#if errorMessage}}
+  <div class="alert alert-danger">
+    <strong>Error:</strong> {{errorMessage}}
+  </div>
+{{/if}}
+
 <form method="POST" action="/Items/add">
   <div class="form-group">
     <label for="title">Title:</label>
-    <input type="text" class="form-control" name="title" id="title" required>
+    <input type="text" class="form-control" name="title" id="title" placeholder="Enter item title" required>
   </div>
 
   <div class="form-group">
     <label for="featureImage">Feature Image URL:</label>
-    <input type="text" class="form-control" name="featureImage" id="featureImage">
+    <input type="text" class="form-control" name="featureImage" id="featureImage" placeholder="http://...">
   </div>
 
   <div class="form-group">
-    <label for="body">Body:</label>
-    <textarea class="form-control" name="body" id="body" rows="5"></textarea>
+    <label for="body">Description:</label>
+    <textarea class="form-control" name="body" id="body" rows="5" placeholder="Item details..."></textarea>
   </div>
 
   <div class="form-group">
-    <label for="price">Price:</label>
-    <input type="number" class="form-control" name="price" id="price" required step="0.01">
+    <label for="price">Price ($):</label>
+    <input type="number" class="form-control" name="price" id="price" required step="0.01" min="0">
   </div>
 
   <div class="form-group">
-    <label for="published">Published:</label>
-    <input type="checkbox" name="published" id="published" value="true">
+    <label>
+      <input type="checkbox" name="published" id="published" value="true"> Published
+    </label>
   </div>
 
   <div class="form-group">
     <label for="category">Category:</label>
     {{#if categories}}
-      <select class="form-control" name="category" id="category">
-        <option value="">Select Category</option>
+      <select class="form-control" name="category" id="category" required>
+        <option value="">Select a category</option>
         {{#each categories}}
           <option value="{{id}}">{{category}}</option>
         {{/each}}
       </select>
     {{else}}
-      <div>No Categories</div>
+      <div class="alert alert-warning">No categories available. Please <a href="/categories/add">add a category</a> first.</div>
     {{/if}}
   </div>
 
