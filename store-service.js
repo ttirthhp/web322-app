@@ -9,7 +9,7 @@ module.exports.initialize = function () {
   return new Promise((resolve, reject) => {
     MongoClient.connect(process.env.MONGO_CONN_STRING)
       .then(client => {
-        db = client.db("web322"); // or your actual DB name
+        db = client.db(); // or your actual DB name
         itemsCollection = db.collection("items");
         categoriesCollection = db.collection("categories");
         console.log(" store-service connected to MongoDB");
@@ -19,8 +19,8 @@ module.exports.initialize = function () {
         reject("Unable to connect to MongoDB in store-service");
       });
   });
-};
 
+  
 
 // Add item
 module.exports.addItem = function (itemData) {
