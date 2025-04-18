@@ -189,7 +189,10 @@ app.get("/Items/add", ensureLogin, (req, res) => {
 app.post("/Items/add", ensureLogin, (req, res) => {
   storeService.addItem(req.body)
     .then(() => res.redirect("/Items"))
-    .catch(() => res.status(500).send("Unable to add post"));
+    .catch((err) => {
+      console.error("Add Post Failed:", err); 
+      res.status(500).send("Unable to add post");
+    });    
 });
 
 app.get("/Items/delete/:id", ensureLogin, (req, res) => {
