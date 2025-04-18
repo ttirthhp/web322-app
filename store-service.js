@@ -19,7 +19,7 @@ module.exports.initialize = function () {
         reject("Unable to connect to MongoDB in store-service");
       });
   });
-
+};
   
 
 // Add item
